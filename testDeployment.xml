@@ -1,0 +1,10 @@
+ - hosts: test
+   remote_user: test
+   tasks:
+
+    - name: ping
+      ping: ~
+
+
+
+

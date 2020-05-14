@@ -1,0 +1,10 @@
+ - hosts: productie
+   remote_user: productie
+   tasks:
+
+    - name: ping
+      ping: ~
+
+
+
+
