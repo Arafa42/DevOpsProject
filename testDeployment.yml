@@ -1,5 +1,5 @@
  - hosts: test
-   become: true
+   become: yes
    remote_user: test
    tasks:
 
@@ -30,6 +30,13 @@
       copy:
          src: /home/arafa/Desktop/CloudApi-BooksApi
          dest: /home/test/Desktop
+
+    - name: stop container if exists
+      #shell: docker stop angularDocker
+      shell: docker stop angularDocker || true && docker rm angularDocker || true
+
+    #- name: remove container if exists
+      #shell: docker rm angularDocker
 
     - name: Build dockerfile in angular project
       shell: | 
