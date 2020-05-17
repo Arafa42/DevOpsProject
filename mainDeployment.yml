@@ -1,5 +1,5 @@
- - include: testDeployment.xml
- - include: prodDeployment.xml
+ - include: testDeployment.yml
+ - include: prodDeployment.yml
 
 
 

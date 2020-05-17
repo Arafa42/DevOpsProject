@@ -1,11 +1,48 @@
  - hosts: productie
+   become: yes
    remote_user: productie
    tasks:
-
 
     - name: ping
       ping: ~
 
+    - name: Install aptitude using apt
+      apt: name=aptitude state=latest update_cache=yes force_apt_get=yes
 
+    - name: Install required system packages
+      apt: name={{ item }} state=latest update_cache=yes
+      loop: [ 'apt-transport-https', 'ca-certificates', 'curl', 'software-properties-common', 'python3-pip', 'virtualenv', 'python3-setuptools']
 
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt: update_cache=yes name=docker-ce state=latest
+
+    - name: Copy Angular project
+      copy:
+         src: /home/arafa/Desktop/CloudApi-BooksApi
+         dest: /home/test/Desktop
+
+    - name: stop container if exists
+      #shell: docker stop angularDocker
+      shell: docker stop angularDocker || true && docker rm angularDocker || true
+
+    #- name: remove container if exists
+      #shell: docker rm angularDocker
+
+    - name: Build dockerfile in angular project
+      shell: |
+         cd /home/test/Desktop/CloudApi-BooksApi/BooksWebApp
+         docker build -t ang .
+
+    - name: Run docker container angular project
+      shell: docker run -d -p 3000:80 --name angularDocker ang
 
