@@ -29,7 +29,7 @@
     - name: Copy Angular project
       copy:
          src: /home/arafa/Desktop/CloudApi-BooksApi
-         dest: /home/test/Desktop
+         dest: /home/productie/Desktop
 
     - name: stop container if exists
       #shell: docker stop angularDocker
