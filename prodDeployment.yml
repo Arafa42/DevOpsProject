@@ -40,7 +40,7 @@
 
     - name: Build dockerfile in angular project
       shell: |
-         cd /home/test/Desktop/CloudApi-BooksApi/BooksWebApp
+         cd /home/productie/Desktop/CloudApi-BooksApi/BooksWebApp
          docker build -t ang .
 
     - name: Run docker container angular project
