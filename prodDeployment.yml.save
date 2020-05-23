@@ -1,6 +1,6 @@
- - hosts: test
+ - hosts: productie
    become: yes
-   remote_user: test
+   remote_user: productie
    tasks:
 
     - name: ping
@@ -29,9 +29,9 @@
     - name: Copy Angular project
       copy:
          src: /home/arafa/Desktop/CloudApi-BooksApi
-         dest: /home/test/Desktop
+         dest: /home/productie/Desktop
 
-    - name: stop angular container if exists
+    - name: stop container if exists
       #shell: docker stop angularDocker
       shell: docker stop angularDocker || true && docker rm angularDocker || true
 
@@ -42,22 +42,23 @@
       #shell: docker stop angularDocker
       shell: docker stop api || true && docker rm api || true
 
+
+
     - name: Build dockerfile in angular project
-      shell: | 
-         cd /home/test/Desktop/CloudApi-BooksApi/BooksWebApp
-         docker build -t ang .
+      shell: |
+         cd /home/productie/Desktop/CloudApi-BooksApi/BooksWebApp         docker build -t ang .
 
     - name: Run docker container angular project
       shell: docker run -d -p 3000:80 --name angularDocker ang
 
-    - name: Build dockerfile in api 
+    - name: Build dockerfile in api
       shell: |
          cd /home/test/Desktop/CloudApi-BooksApi/BooksApi/BooksApi
          docker build -t aspapp .
-   
+
     - name: Run docker container api
       shell: docker run -d -p 44354:80 --name api aspapp
-     
+
     - name: update
       shell: apt-get update
 
