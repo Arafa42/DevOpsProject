@@ -1,0 +1,53 @@
+pipeline {
+   agent any
+   tools {nodejs "NodeJS"}
+    
+    stages {
+        stage('Install') {
+            steps {
+                sh 'cd BooksWebApp && npm install'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'cd BooksWebApp && npm build'
+            }
+        }
+        stage('Test') {
+            steps {
+                node('ubuntu'){
+                
+                sh script:'''
+                   #!/bin/bash
+                   echo "This is start $(pwd)"
+                   cd /home/arafa/Desktop/
+                   rm -r AngularProj
+                   mkdir AngularProj
+                   cd AngularProj
+                   git clone git@github.com:Arafa42/CloudApi-BooksApi.git
+                   cd CloudApi-BooksApi/BooksWebApp
+                   npm install
+                   export DISPLAY=:0
+                   npm test
+                  '''               
+            }
+                 
+            }
+        }        
+        stage('Deploy playbook') {
+            steps {
+            node('ubuntu'){
+            
+                sh script:'''
+                   #!/bin/bash
+                   echo "huidig path $(pwd)"
+                   cd /home/arafa/Desktop/AnsibleDeployment
+                   echo "huidig path $(pwd)"
+                   ansible-playbook mainDeployment.yml
+                  '''
+                  
+            }
+            }
+        }             
+    }
+}
