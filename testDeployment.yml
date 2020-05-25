@@ -56,7 +56,7 @@
          docker build -t aspapp .
    
     - name: Run docker container api
-      shell: docker run -d -p 44354:80 --name api aspapp
+      shell: docker run -d -p 44354:8080 --name api aspapp
      
     - name: update
       shell: apt-get update
